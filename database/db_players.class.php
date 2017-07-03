@@ -10,8 +10,8 @@ class db_players extends database_table {
         return self::$instance;
     }
 
-    private function __construct() {
-        parent::__construct(MYSQL_DATABASE, TABLE_PLAYERS);
+    private function db_players() {
+        parent::database_table(MYSQL_DATABASE, TABLE_PLAYERS);
     }
 
     public function get_player_by_id($id) {

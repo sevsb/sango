@@ -1,0 +1,44 @@
+<style>
+    .board .board-topleft { background-image: url([:app]/images/wuzi/topleft.png); }
+    .board .board-top { background-image: url([:app]/images/wuzi/top.png); }
+    .board .board-topright { background-image: url([:app]/images/wuzi/topright.png); }
+    .board .board-left { background-image: url([:app]/images/wuzi/left.png); }
+    .board .board-cross { background-image: url([:app]/images/wuzi/cross.png); }
+    .board .board-right { background-image: url([:app]/images/wuzi/right.png); }
+    .board .board-bottomleft { background-image: url([:app]/images/wuzi/bottomleft.png); }
+    .board .board-bottom { background-image: url([:app]/images/wuzi/bottom.png); }
+    .board .board-bottomright { background-image: url([:app]/images/wuzi/bottomright.png); }
+</style>
+<div class="board">
+    <?php for ($i = 0; $i < 15; $i++) {
+            if ($i == 0) {
+                $line = "top";
+            } else if ($i == 14) {
+                $line = "bottom";
+            } else {
+                $line = "";
+            }
+            $lef = $line . "left";
+            $rig = $line . "right";
+            $mid = empty($line) ? "cross" : $line;
+    ?>
+    <div class="board-row clear">
+        <div wcol="A" wrow="{=$i}" class="board-node board-{=$lef}"></div>
+        <div wcol="B" wrow="{=$i}" class="board-node board-{=$mid}"><div class="piece white-piece"></div></div>
+        <div wcol="C" wrow="{=$i}" class="board-node board-{=$mid}"><div class="piece black-piece"></div></div>
+        <div wcol="D" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="E" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="F" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="G" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="H" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="I" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="J" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="K" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="L" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="M" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="N" wrow="{=$i}" class="board-node board-{=$mid}"></div>
+        <div wcol="O" wrow="{=$i}" class="board-node board-{=$rig}"></div>
+    </div>
+    <?php } ?>
+</div>
+

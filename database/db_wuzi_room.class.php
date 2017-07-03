@@ -10,8 +10,8 @@ class db_wuzi_room extends database_table {
         return self::$instance;
     }
 
-    private function __construct() {
-        parent::__construct(MYSQL_DATABASE, TABLE_WUZI_ROOM);
+    private function db_wuzi_room() {
+        parent::database_table(MYSQL_DATABASE, TABLE_WUZI_ROOM);
     }
 
     public function get_all_rooms() {

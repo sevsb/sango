@@ -1,0 +1,8 @@
+<?php foreach ($rooms as $id => $room) { ?>
+<div class="room">
+    <div class="room-title">{=$room["title"]}</div>
+    <div class="room-type">{=$room["type"]}</div>
+    <div class="room-status">{=$room["status"]}</div>
+    <a href="?client/wuzi/room&room={=$id}">加入</a>
+</div>
+<?php } ?>
