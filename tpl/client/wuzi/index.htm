@@ -1,8 +1,28 @@
 <?php foreach ($rooms as $id => $room) { ?>
 <div class="room">
-    <div class="room-title">{=$room["title"]}</div>
-    <div class="room-type">{=$room["type"]}</div>
-    <div class="room-status">{=$room["status"]}</div>
-    <a href="?client/wuzi/room&room={=$id}">加入</a>
+    <div class="room-title">{=$room->title()}</div>
+    <div class="room-status">{=$room->status_text()}</div>
+
+    <div class="room-player clear">
+        <?php if ($room->player1() == null) { ?>
+        <button class="join" onclick="join({=$id}, 1);">执黑</button>
+        <?php } else { ?>
+        <div class="player-face"><img src="{=$room->player1()->faceurl()}"></img></div>
+        <div class="player-nick">{=$room->player1()->nick()}</div>
+        <button class="leave" onclick="leave({=$id}, 1);">离开</button>
+        <?php } ?>
+    </div>
+
+    <div class="room-player clear">
+        <?php if ($room->player2() == null) { ?>
+        <button class="join" onclick="join({=$id}, 2);">执白</button>
+        <?php } else { ?>
+        <div class="player-face"><img src="{=$room->player2()->faceurl()}"></img></div>
+        <div class="player-nick">{=$room->player2()->nick()}</div>
+        <button class="leave" onclick="leave({=$id}, 2);">离开</button>
+        <?php } ?>
+    </div>
+
 </div>
 <?php } ?>
+

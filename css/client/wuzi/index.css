@@ -1,0 +1,45 @@
+
+.room {
+    width: 200px;
+    float: left;
+    border: solid 1px #ccc;
+    margin: 2px;
+}
+
+.room .room-title{
+    width: 100%;
+}
+
+.room .room-status {
+    width: 100%;
+}
+
+.room .room-player {
+    width: 100%;
+}
+
+.room .room-player .player-face {
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.room .room-player .player-face img {
+    width: 100%;
+}
+
+.room .room-player .player-nick {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+}
+
+.room .room-player button.join {
+    width: 100%;
+    height: 30px;
+}
+
+.room .room-player button.leave {
+    float: left;
+    height: 30px;
+}

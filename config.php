@@ -15,6 +15,8 @@ include_once(FRAMEWORK_PATH . "/database.php");
 include_once(dirname(__FILE__) . "/database/db_players.class.php");
 include_once(dirname(__FILE__) . "/libs/Lock.php");
 include_once(dirname(__FILE__) . "/libs/WeChat.php");
+include_once(dirname(__FILE__) . "/app/room.class.php");
+include_once(dirname(__FILE__) . "/app/player.class.php");
 
 
 // database

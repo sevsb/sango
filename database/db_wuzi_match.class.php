@@ -3,6 +3,8 @@
 include_once(dirname(__FILE__) . "/../config.php");
 
 class db_wuzi_match extends database_table {
+    const TYPE_NORMAL = 0;
+
     private static $instance = null;
     public static function inst() {
         if (self::$instance == null)
@@ -16,6 +18,10 @@ class db_wuzi_match extends database_table {
 
     public function get_all_matchs() {
         return $this->get_all();
+    }
+
+    public function add($type, $player1, $player2) {
+        return $this->insert(array("type" => $type, "player1" => $player1, "player2" => $player2));
     }
 };
 
