@@ -17,5 +17,6 @@
 .matchinfo .player-nick { height: 50px; line-height: 50px; float:left; }
 .matchinfo .white-piece { float: left; background-color: white; border: solid 1px #888; width: 50px; height: 50px; border-radius: 25px; }
 .matchinfo .black-piece { float: left; background-color: black; border: solid 1px #888; width: 50px; height: 50px; border-radius: 25px; }
+.matchinfo .player .player-tip { float: left; height: 50px; line-height: 50px; color: red; font-size: 22px; margin-left: 50px; }
 
 

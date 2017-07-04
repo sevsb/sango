@@ -1,11 +1,11 @@
 $(document).ready(function() {
     $(".board-node").each(function() {
         $(this).click(function() {
-            var turn = $("#matchconfig").attr("turn");
-            if (turn != '1') {
-                alert("no your turn.");
-                return;
-            }
+            // var turn = $("#matchconfig").attr("turn");
+            // if (turn != '1') {
+            //     alert("not your turn.");
+            //     return;
+            // }
 
             if ($(this).hasClass("white-piece") || $(this).hasClass("black-piece")) {
                 alert("A piece is at this place.");

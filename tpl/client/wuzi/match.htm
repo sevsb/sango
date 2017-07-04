@@ -45,7 +45,7 @@
         <?php } ?>
     </div>
     <?php } ?>
-    <?php $turn = ($match->get_last_player()->id() == $player->id()) ? 0 : 1; ?>
+    <?php $turn = ($match->next_player()->id() == $player->id()) ? 1 : 0; ?>
     <div id="matchconfig" turn="{=$turn}" match="{=$match->id()}"></div>
 </div>
 <div class="matchinfo clear">
@@ -53,11 +53,15 @@
         <div class="black-piece"></div>
         <div class="player-face"><img src="{=$match->player1()->faceurl()}"></img></div>
         <div class="player-nick">{=$match->player1()->nick()}</div>
+        <div class="player-tip turn player1 {=($match->winner() == null && $match->player1()->id() == $match->next_player()->id()) ? "" : "hidden"}">turn</div>
+        <div class="player-tip win player1 {=($match->winner() != null && $match->winner()->id() == $match->player1()->id()) ? "" : "hidden"}">win</div>
     </div>
     <div class="player clear">
         <div class="white-piece"></div>
         <div class="player-face"><img src="{=$match->player2()->faceurl()}"></img></div>
         <div class="player-nick">{=$match->player2()->nick()}</div>
+        <div class="player-tip turn player2 {=($match->winner() == null && $match->player2()->id() == $match->next_player()->id()) ? "" : "hidden"}">turn</div>
+        <div class="player-tip win player2 {=($match->winner() != null && $match->winner()->id() == $match->player2()->id()) ? "" : "hidden"}">win</div>
     </div>
 </div>
 

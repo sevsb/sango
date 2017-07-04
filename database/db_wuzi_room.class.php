@@ -27,6 +27,11 @@ class db_wuzi_room extends database_table {
         return $this->get_one("id = $id");
     }
 
+    public function get_room_by_matchid($mid) {
+        $mid = (int)$mid;
+        return $this->get_one("matchid = $mid");
+    }
+
     public function update_player1($roomid, $playerid) {
         $roomid = (int)$roomid;
         $playerid = (int)$playerid;
@@ -49,6 +54,11 @@ class db_wuzi_room extends database_table {
         $roomid = (int)$roomid;
         $mid = (int)$mid;
         return $this->update(array("matchid" => $mid), "id = $roomid");
+    }
+
+    public function reset_after_match($matchid) {
+        $matchid = (int)$matchid;
+        return $this->update(array("matchid" => 0, "status" => self::STATUS_EMPTY, "player1" => 0, "player2" => 0), "matchid = $matchid");
     }
 };
 

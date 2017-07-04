@@ -111,12 +111,15 @@ class wuzi_controller {
         $player = get_session_assert("player");
 
         $match = match::create($matchid);
-        $lp = $match->get_last_player();
-        if ($lp->id() == $player["id"]) {
+        if ($match->winner() != null) {
+            return "fail|game over. {$match->winner()->nick()} win.";
+        }
+
+        $lp = $match->next_player();
+        if ($lp->id() != $player["id"]) {
             return "fail|Not your turn.";
         }
-        $ret = db_wuzi_chess::inst()->place_piece($matchid, $place, $player["id"]);
-        return ($ret !== false) ? "success" : "fail|数据库操作失败，请稍后重试。";
+        return $match->place_piece($place);
     }
 
 }

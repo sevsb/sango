@@ -44,6 +44,13 @@ class db_wuzi_match extends database_table {
     public function add($type, $player1, $player2) {
         return $this->insert(array("type" => $type, "player1" => $player1, "player2" => $player2));
     }
+
+    public function update_winner($mid, $pid) {
+        $mid = (int)$mid;
+        $pid = (int)$pid;
+        $progress = ($pid != 0) ? 1 : 0;
+        return $this->update(array("progress" => $progress, "winner" => $pid), "id = $mid");
+    }
 };
 
 
