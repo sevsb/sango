@@ -130,7 +130,7 @@ class wuzi_controller {
         while (time() - $start < 5) {
             $one = db_wuzi_chess::inst()->get_last_place($matchid);
             if ($one["id"] != $placeid) {
-                logging::d("Debug", "long pool: new place. $one vs $placeid");
+                logging::d("Debug", "long pool: new place. {$one["id"]} vs $placeid");
                 return "success";
             }
             usleep(5000000);

@@ -47,7 +47,7 @@ $(document).ready(function() {
         $(this).children(".piece").css("top", t + "px");
     });
 
-    setInterval("refresh()", 2000);
+    // setInterval("refresh()", 2000);
 });
 
 
