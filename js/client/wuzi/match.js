@@ -117,6 +117,14 @@ $(document).ready(function() {
             }
             $("div[place='" +place + "']").addClass(clz);
             // document.location.reload();
+
+            $(".p1.turn").addClass("hidden");
+            $(".p2.turn").addClass("hidden");
+            if (player == pid1) {
+                $(".p2.turn").removeClass("hidden");
+            } else {
+                $(".p1.turn").removeClass("hidden");
+            }
         }
     };
 
