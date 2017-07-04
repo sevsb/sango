@@ -24,7 +24,7 @@ class wuzi_controller {
 
     public function matchlist_action() {
         $player = get_session_assert("player");
-        $matches = match::load_all($player["id"], true);
+        $matches = match::load_all($player["id"], false);
         $tpl = new tpl("client/header", "client/footer");
         $tpl->set("matches", $matches);
         $tpl->display("client/wuzi/matchlist");

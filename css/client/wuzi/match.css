@@ -1,6 +1,6 @@
 
 .board { }
-.board .board-node { width: 25px; height: 25px; float: left; margin: 0px; border: 0px; padding: 0px; }
+.board .board-node { width: 6%; height: 20px; float: left; margin: 0px; border: 0px; padding: 0px; }
 .board .board-node .piece { left: 2px; top: 4px; width: 18px; height: 18px; margin: auto; border: 0px; padding: 0px; border-radius: 10px; /* background-color: #6cf; */ position: relative; }
 .board .board-node .piece.white-piece { background-color: white; border: solid 1px #888; }
 .board .board-node .piece.black-piece { background-color: black; border: solid 1px #222; }
