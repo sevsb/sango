@@ -122,6 +122,22 @@ class wuzi_controller {
         return $match->place_piece($place);
     }
 
+    public function refresh_ajax() {
+        $matchid = get_request_assert("matchid");
+        $placeid = get_request_assert("placeid");
+        // logging::d("Debug", "long pool: check $matchid/$placeid");
+        $start = time();
+        while (time() - $start < 5) {
+            $one = db_wuzi_chess::inst()->get_last_place($matchid);
+            if ($one["id"] != $placeid) {
+                logging::d("Debug", "long pool: new place. $one vs $placeid");
+                return "success";
+            }
+            usleep(5000000);
+        }
+        // logging::d("Debug", "long pool: no place.");
+        return "fail";
+    }
 }
 
 

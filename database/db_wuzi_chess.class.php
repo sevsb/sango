@@ -24,6 +24,11 @@ class db_wuzi_chess extends database_table {
         $player = (int)$player;
         return $this->insert(array("matchid" => $matchid, "place" => $place, "player" => $player));
     }
+
+    public function get_last_place($mid) {
+        $mid = (int)$mid;
+        return $this->get_one("matchid = $mid", "ORDER BY id DESC");
+    }
 };
 
 

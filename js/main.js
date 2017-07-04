@@ -41,7 +41,7 @@ function __ajax(action, data, success, fail, message_on_success) {
                 }
             } else {
                 if (typeof(data.reason) == 'undefined') {
-                    alert(data.ret);
+                    // alert(data.ret);
                 } else {
                     alert(data.reason);
                 }

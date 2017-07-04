@@ -1,4 +1,16 @@
+function refresh() {
+    var matchid = $("#matchconfig").attr("match");
+    var lastplace = $("#matchconfig").attr("lastplaceid");
+    if (lastplace == -1) {
+        return;
+    }
+    __ajax("client.wuzi.refresh", {matchid: matchid, placeid: lastplace}, true, function(data) {
+        console.debug("no new place.");
+    });
+}
+
 $(document).ready(function() {
+    console.debug("docuemnt.ready.");
     $(".board-node").click(function() {
         // var turn = $("#matchconfig").attr("turn");
         // if (turn != '1') {
@@ -34,5 +46,8 @@ $(document).ready(function() {
         $(this).children(".piece").css("left", l + "px");
         $(this).children(".piece").css("top", t + "px");
     });
+
+    setInterval("refresh()", 2000);
 });
+
 

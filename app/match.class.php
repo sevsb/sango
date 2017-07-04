@@ -54,6 +54,19 @@ class match {
         return null;
     }
 
+    public function last_place_id() {
+        $places = $this->load_places();
+        if (empty($places)) {
+            return 0;
+        }
+
+        $lp = end($places);
+        if (empty($lp)) {
+            return 0;
+        }
+        return $lp["id"];
+    }
+
 
     public function piece_status($place) {
         foreach ($this->places as $key => $ps) {

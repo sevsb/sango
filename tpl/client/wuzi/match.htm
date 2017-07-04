@@ -45,9 +45,9 @@
         <?php } ?>
     </div>
     <?php } ?>
-    <?php $turn = ($match->next_player()->id() == $player->id()) ? 1 : 0; ?>
-    <div id="matchconfig" turn="{=$turn}" match="{=$match->id()}"></div>
 </div>
+<?php $turn = ($match->next_player()->id() == $player->id()) ? 1 : 0; ?>
+<div id="matchconfig" turn="{=$turn}" match="{=$match->id()}" lastplaceid="{=$match->last_place_id()}"></div>
 <div class="matchinfo clear">
     <div class="player clear">
         <div class="black-piece"></div>
