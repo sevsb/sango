@@ -1,6 +1,8 @@
 <?php
 include_once(dirname(__FILE__) . "/../../config.php");
 include_once(dirname(__FILE__) . "/../../database/db_wuzi_room.class.php");
+include_once(dirname(__FILE__) . "/../../database/db_wuzi_match.class.php");
+include_once(dirname(__FILE__) . "/../../database/db_wuzi_chess.class.php");
 
 class wuzi_controller {
     
@@ -12,15 +14,34 @@ class wuzi_controller {
 
     public function index_action() {
         $rooms = room::load_all();
+        $player = get_session_assert("player");
 
         $tpl = new tpl("client/header", "client/footer");
         $tpl->set("rooms", $rooms);
+        $tpl->set("player", $player);
         $tpl->display("client/wuzi/index");
     }
 
-    public function room_action() {
-        $roomid = get_request_assert("room");
+    public function matchlist_action() {
+        $player = get_session_assert("player");
+        $matches = match::load_all($player["id"], true);
         $tpl = new tpl("client/header", "client/footer");
+        $tpl->set("matches", $matches);
+        $tpl->display("client/wuzi/matchlist");
+    }
+
+
+    public function match_action() {
+        $matchid = get_request_assert("match");
+        $match = match::create($matchid);
+        $match->load_places();
+
+        $player = get_session_assert("player");
+        $player = new player($player);
+
+        $tpl = new tpl("client/header", "client/footer");
+        $tpl->set("match", $match);
+        $tpl->set("player", $player);
         $tpl->display("client/wuzi/match");
     }
 
@@ -84,6 +105,19 @@ class wuzi_controller {
         return ($ret !== false) ? "success" : "fail|数据库操作失败，请稍后重试。";
     }
 
+    public function place_ajax() {
+        $matchid = get_request_assert("matchid");
+        $place = get_request_assert("place");
+        $player = get_session_assert("player");
+
+        $match = match::create($matchid);
+        $lp = $match->get_last_player();
+        if ($lp->id() == $player["id"]) {
+            return "fail|Not your turn.";
+        }
+        $ret = db_wuzi_chess::inst()->place_piece($matchid, $place, $player["id"]);
+        return ($ret !== false) ? "success" : "fail|数据库操作失败，请稍后重试。";
+    }
 
 }
 

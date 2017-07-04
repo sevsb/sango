@@ -1,47 +1,21 @@
 
-.board {
-}
+.board { }
+.board .board-node { width: 25px; height: 25px; float: left; margin: 0px; border: 0px; padding: 0px; }
+.board .board-node .piece { left: 2px; top: 4px; width: 18px; height: 18px; margin: auto; border: 0px; padding: 0px; border-radius: 10px; /* background-color: #6cf; */ position: relative; }
+.board .board-node .piece.white-piece { background-color: white; border: solid 1px #888; }
+.board .board-node .piece.black-piece { background-color: black; border: solid 1px #222; }
+.board .board-node.white-piece .piece { background-color: white; border: solid 1px #888; }
+.board .board-node.black-piece .piece { background-color: black; border: solid 1px #222; }
 
-.board .board-node {
-    width: 25px;
-    height: 25px;
-    float: left;
-    margin: 0px;
-    border: 0px;
-    padding: 0px;
-    /* background-color: #6cf; */
-}
-
-.board .board-node .piece {
-    left: 2px;
-    top: 4px;
-    width: 18px;
-    height: 18px;
-    margin: auto;
-    border: 0px;
-    padding: 0px;
-    border-radius: 10px;
-    /* background-color: #6cf; */
-    position: relative;
-}
-
-.board .board-node .piece.white-piece {
-    background-color: white;
-    border: solid 1px #888;
-}
-
-.board .board-node .piece.black-piece {
-    background-color: black;
-    border: solid 1px #222;
-}
+.board .board-offset { width: 25px; height: 25px; float: left; text-align: center; };
 
 
-
-.board .board-offset {
-    width: 25px;
-    height: 25px;
-    float: left;
-    text-align: center;
-};
+.matchinfo { width: 100%; border: solid 1px #ccc; border: 0px; margin-top: 5px; }
+.matchinfo .player { margin-top: 10px; }
+.matchinfo .player-face { width: 50px; height: 50px; float: left; }
+.matchinfo .player-face img { width: 100%; }
+.matchinfo .player-nick { height: 50px; line-height: 50px; float:left; }
+.matchinfo .white-piece { float: left; background-color: white; border: solid 1px #888; width: 50px; height: 50px; border-radius: 25px; }
+.matchinfo .black-piece { float: left; background-color: black; border: solid 1px #888; width: 50px; height: 50px; border-radius: 25px; }
 
 

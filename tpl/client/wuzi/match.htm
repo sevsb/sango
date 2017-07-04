@@ -23,22 +23,41 @@
             $mid = empty($line) ? "cross" : $line;
     ?>
     <div class="board-row clear">
-        <div wcol="A" wrow="{=$i}" class="board-node board-{=$lef}"></div>
-        <div wcol="B" wrow="{=$i}" class="board-node board-{=$mid}"><div class="piece white-piece"></div></div>
-        <div wcol="C" wrow="{=$i}" class="board-node board-{=$mid}"><div class="piece black-piece"></div></div>
-        <div wcol="D" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="E" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="F" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="G" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="H" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="I" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="J" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="K" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="L" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="M" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="N" wrow="{=$i}" class="board-node board-{=$mid}"></div>
-        <div wcol="O" wrow="{=$i}" class="board-node board-{=$rig}"></div>
+        <?php for ($j = 0; $j < 15; $j++) {
+                $A = ord('A');
+                if ($j == 0) {
+                    $boardclass = "board-$lef";
+                } else if ($j == 14) {
+                    $boardclass = "board-$rig";
+                } else {
+                    $boardclass = "board-$mid";
+                }
+                $place = chr($A + $j) . $i;
+                $piece = "";
+                $ps = $match->piece_status($place);
+                if ($ps == $match->pid1()) {
+                    $piece = "black-piece";
+                } else if ($ps == $match->pid2()) {
+                    $piece = "white-piece";
+                }
+            ?>
+            <div place="{=$place}" class="board-node {=$boardclass} {=$piece}"><div class="piece"></div></div>
+        <?php } ?>
     </div>
     <?php } ?>
+    <?php $turn = ($match->get_last_player()->id() == $player->id()) ? 0 : 1; ?>
+    <div id="matchconfig" turn="{=$turn}" match="{=$match->id()}"></div>
+</div>
+<div class="matchinfo clear">
+    <div class="player clear">
+        <div class="black-piece"></div>
+        <div class="player-face"><img src="{=$match->player1()->faceurl()}"></img></div>
+        <div class="player-nick">{=$match->player1()->nick()}</div>
+    </div>
+    <div class="player clear">
+        <div class="white-piece"></div>
+        <div class="player-face"><img src="{=$match->player2()->faceurl()}"></img></div>
+        <div class="player-nick">{=$match->player2()->nick()}</div>
+    </div>
 </div>
 

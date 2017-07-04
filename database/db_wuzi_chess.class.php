@@ -14,6 +14,16 @@ class db_wuzi_chess extends database_table {
         parent::__construct(MYSQL_DATABASE, TABLE_WUZI_CHESS);
     }
 
+    public function load_match_places($matchid) {
+        $matchid = (int)$matchid;
+        return $this->get_all("matchid = $matchid");
+    }
+
+    public function place_piece($matchid, $place, $player) {
+        $matchid = (int)$matchid;
+        $player = (int)$player;
+        return $this->insert(array("matchid" => $matchid, "place" => $place, "player" => $player));
+    }
 };
 
 

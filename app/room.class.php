@@ -31,7 +31,7 @@ class room {
             return "空闲";
         case db_wuzi_room::STATUS_WAITING:
             return "组队中";
-        case db_wuzi_room::CHESSING:
+        case db_wuzi_room::STATUS_CHESSING:
             return "正在对弈";
         default:
             return "未知";
@@ -40,6 +40,10 @@ class room {
 
     public function status() {
         return $this->summary["status"];
+    }
+
+    public function is_chessing() {
+        return $this->status() == db_wuzi_room::STATUS_CHESSING;
     }
 
     public function title() {

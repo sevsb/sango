@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . "/../config.php");
 
 class player {
     private $summary = array();
-    private function player($summary) {
+    public function player($summary) {
         $this->summary = $summary;
     }
 
