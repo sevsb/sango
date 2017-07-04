@@ -1,20 +1,18 @@
 <div class="matches clear">
+    <table class="table">
     <?php foreach ($matches as $id => $match) { ?>
-    <div class="match" match="{=$id}">
-        <div class="player1">
-            <div class="clear">
+        <tr class="match" match="{=$id}">
+            <td>
                 <div class="player-face"><img src="{=$match->player1()->faceurl()}"></img></div>
-                <div class="player-nick">{=$match->player1()->nick()}</div>
-            </div>
-        </div>
-        <div class="vs">VS</span>
-        <div class="player2">
-            <div class="clear">
+                <div class="player-nick">{=$match->player2()->nick()}</div>
+            </td>
+            <td>VS</td>
+            <td>
                 <div class="player-face"><img src="{=$match->player2()->faceurl()}"></img></div>
                 <div class="player-nick">{=$match->player2()->nick()}</div>
-            </div>
-        </div>
-    </div>
+            </td>
+        </tr>
     <?php } ?>
+    </table>
 </div>
 
