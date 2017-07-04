@@ -48,7 +48,7 @@ class db_wuzi_match extends database_table {
     public function update_winner($mid, $pid) {
         $mid = (int)$mid;
         $pid = (int)$pid;
-        $progress = ($pid != 0) ? 1 : 0;
+        $progress = ($pid != 0) ? self::PROGRESS_DONE : self::PROGRESS_CHESSING;
         return $this->update(array("progress" => $progress, "winner" => $pid), "id = $mid");
     }
 };

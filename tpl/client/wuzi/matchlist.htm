@@ -1,10 +1,12 @@
 <div class="matches clear">
+    <div>正在对弈</div>
     <table class="table">
     <?php foreach ($matches as $id => $match) { ?>
+    <?php   if (!$match->is_chessing()) continue; ?>
         <tr class="match" match="{=$id}">
             <td>
                 <div class="player-face"><img src="{=$match->player1()->faceurl()}"></img></div>
-                <div class="player-nick">{=$match->player2()->nick()}</div>
+                <div class="player-nick">{=$match->player1()->nick()}</div>
             </td>
             <td>VS</td>
             <td>
@@ -14,5 +16,25 @@
         </tr>
     <?php } ?>
     </table>
+
+    <hr />
+    <div>已完成对局</div>
+    <table class="table">
+    <?php foreach ($matches as $id => $match) { ?>
+    <?php   if (!$match->is_chessing()) continue; ?>
+        <tr class="match" match="{=$id}">
+            <td>
+                <div class="player-face"><img src="{=$match->player1()->faceurl()}"></img></div>
+                <div class="player-nick">{=$match->player1()->nick()}</div>
+            </td>
+            <td>VS</td>
+            <td>
+                <div class="player-face"><img src="{=$match->player2()->faceurl()}"></img></div>
+                <div class="player-nick">{=$match->player2()->nick()}</div>
+            </td>
+        </tr>
+    <?php } ?>
+    </table>
+
 </div>
 

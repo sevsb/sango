@@ -117,7 +117,7 @@ class match {
     }
 
     public function is_chessing() {
-        return $this->status() == db_wuzi_match::PROGRESS_CHESSING;
+        return $this->progress() == db_wuzi_match::PROGRESS_CHESSING;
     }
 
     private function check_direction($arr, $pid) {
