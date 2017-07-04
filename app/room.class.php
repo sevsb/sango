@@ -50,6 +50,10 @@ class room {
         return $this->summary["title"];
     }
 
+    public function matchid() {
+        return $this->summary["matchid"];
+    }
+
     public static function load_all() {
         $rooms = array();
         $rss = db_wuzi_room::inst()->get_all();

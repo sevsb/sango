@@ -2,7 +2,11 @@
     <?php foreach ($rooms as $id => $room) { ?>
     <div class="room">
         <div class="room-title">{=$room->title()}</div>
-        <div class="room-status">{=$room->status_text()}</div>
+        <div class="room-status">{=$room->status_text()}
+            <?php if ($room->is_chessing()) { ?>
+            <a href="?client/wuzi/match&match={=$room->matchid()}">观战</a>
+            <?php } ?>
+        </div>
 
         <div class="room-player clear">
             <?php if ($room->player1() == null) { ?>
