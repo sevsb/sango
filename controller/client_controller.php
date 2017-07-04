@@ -17,6 +17,7 @@ class client_controller {
             $player = array("id" => db_players::inst()->last_insert_id(), "openid" => $openid, "nick" => $nick, "faceurl" => $faceurl);
         }
         $_SESSION["player"] = $player;
+        $_SESSION["user.name"] = $player["nick"];
         go("client/wuzi/index");
     }
 
