@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . "/../config.php");
 include_once(dirname(__FILE__) . "/player.class.php");
 include_once(dirname(__FILE__) . "/../database/db_wuzi_chess.class.php");
 
-class match {
+class wuzi_match {
     private $summary = array();
     private $players = array();
     private $places = array();
@@ -12,7 +12,7 @@ class match {
         $matches = array();
         $rss = db_wuzi_match::inst()->get_matches($pid, $onlychessing ? 0 : -1);
         foreach ($rss as $id => $summary) {
-            $matches [$id]= new match($summary);
+            $matches [$id]= new wuzi_match($summary);
         }
         return $matches;
     }
@@ -21,10 +21,10 @@ class match {
         if (empty($match)) {
             return null;
         }
-        return new match($match);
+        return new wuzi_match($match);
     }
 
-    private function match($summary) {
+    private function wuzi_match($summary) {
         $this->summary = $summary;
         $pid1 = $summary["player1"];
         $pid2 = $summary["player2"];
@@ -184,7 +184,7 @@ class match {
         $winner = $this->check_winner();
         if ($winner) {
             $ret = db_wuzi_match::inst()->update_winner($this->id(), $player->id());
-            $ret &= db_wuzi_room::inst()->reset_after_match($this->id());
+            $ret &= db_room::inst()->reset_after_match($this->id());
             return ($ret !== false) ? "success|{$player->nick()} win." : "fail|{$player->nick()} win.";
         } else {
             return "success";

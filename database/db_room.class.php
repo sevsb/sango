@@ -2,19 +2,21 @@
 
 include_once(dirname(__FILE__) . "/../config.php");
 
-class db_wuzi_room extends database_table {
+class db_room extends database_table {
     const STATUS_EMPTY = 0;
     const STATUS_WAITING = 1;
     const STATUS_CHESSING = 2;
 
+    const TYPE_WUZI = 0;
+
     private static $instance = null;
     public static function inst() {
         if (self::$instance == null)
-            self::$instance = new db_wuzi_room();
+            self::$instance = new db_room();
         return self::$instance;
     }
 
-    private function db_wuzi_room() {
+    private function db_room() {
         parent::database_table(MYSQL_DATABASE, TABLE_WUZI_ROOM);
     }
 

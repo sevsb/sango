@@ -17,7 +17,7 @@ include_once(dirname(__FILE__) . "/libs/Lock.php");
 include_once(dirname(__FILE__) . "/libs/WeChat.php");
 include_once(dirname(__FILE__) . "/app/room.class.php");
 include_once(dirname(__FILE__) . "/app/player.class.php");
-include_once(dirname(__FILE__) . "/app/match.class.php");
+include_once(dirname(__FILE__) . "/app/wuzi_match.class.php");
 
 
 // database
@@ -28,7 +28,7 @@ defined('MYSQL_DATABASE') or define('MYSQL_DATABASE', 'sango');
 defined('MYSQL_PREFIX') or define('MYSQL_PREFIX', '');
 
 
-defined('TABLE_WIZI_ROOM') or define('TABLE_WUZI_ROOM', MYSQL_PREFIX . "wuzi_room");
+defined('TABLE_WIZI_ROOM') or define('TABLE_WUZI_ROOM', MYSQL_PREFIX . "room");
 defined('TABLE_WIZI_MATCH') or define('TABLE_WUZI_MATCH', MYSQL_PREFIX . "wuzi_match");
 defined('TABLE_WIZI_CHESS') or define('TABLE_WUZI_CHESS', MYSQL_PREFIX . "wuzi_chess");
 defined('TABLE_WIZI_CHAT') or define('TABLE_WUZI_CHAT', MYSQL_PREFIX . "wuzi_chat");

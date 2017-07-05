@@ -1,6 +1,6 @@
 <?php
 include_once(dirname(__FILE__) . "/config.php");
-include_once(dirname(__FILE__) . "/database/db_wuzi_room.class.php");
+include_once(dirname(__FILE__) . "/database/db_room.class.php");
 include_once(dirname(__FILE__) . "/database/db_wuzi_match.class.php");
 include_once(dirname(__FILE__) . "/database/db_wuzi_chess.class.php");
 
@@ -34,14 +34,17 @@ class server {
             $player = $jsarr["player"];
             $this->clients[$frame->fd]["player"] = $player;
         } else if ($op == "match") {
+            $type = db_room::TYPE_WUZI;
             $mid = $jsarr["match"];
             $this->clients[$frame->fd]["match"] = $mid;
+            $this->clients[$frame->fd]["type"] = $type;
         } else if ($op == "place") {
             $place = $jsarr["place"];
             $player = $this->clients[$frame->fd]["player"];
             $mid = $this->clients[$frame->fd]["match"];
+            $type = $this->clients[$frame->fd]["type"];
 
-            $match = match::create($mid);
+            $match = match::create($type, $mid);
             if ($match->winner() != null) {
                 $this->ws->push($frame->fd, json_encode(array("op" => "tip", "ret" => "fail", "reason" => "game over. {$match->winner()->nick()} win.")));
                 return;

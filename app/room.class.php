@@ -27,11 +27,11 @@ class room {
 
     public function status_text() {
         switch ($this->summary["status"]) {
-        case db_wuzi_room::STATUS_EMPTY:
+        case db_room::STATUS_EMPTY:
             return "空闲";
-        case db_wuzi_room::STATUS_WAITING:
+        case db_room::STATUS_WAITING:
             return "组队中";
-        case db_wuzi_room::STATUS_CHESSING:
+        case db_room::STATUS_CHESSING:
             return "正在对弈";
         default:
             return "未知";
@@ -42,8 +42,22 @@ class room {
         return $this->summary["status"];
     }
 
+    public function type() {
+        return $this->summary["type"];
+    }
+
+    public function type_text() {
+        switch ($this->summary["type"]) {
+        case db_room::TYPE_WUZI:
+            return "五子棋";
+        default:
+            break;
+        }
+        return "未知";
+    }
+
     public function is_chessing() {
-        return $this->status() == db_wuzi_room::STATUS_CHESSING;
+        return $this->status() == db_room::STATUS_CHESSING;
     }
 
     public function title() {
@@ -56,7 +70,7 @@ class room {
 
     public static function load_all() {
         $rooms = array();
-        $rss = db_wuzi_room::inst()->get_all();
+        $rss = db_room::inst()->get_all();
         foreach ($rss as $id => $summary) {
             $rooms [$id]= new room($summary);
         }

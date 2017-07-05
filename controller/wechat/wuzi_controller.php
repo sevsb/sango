@@ -6,20 +6,31 @@ include_once(dirname(__FILE__) . "/../../database/db_wuzi_chess.class.php");
 
 class wuzi_controller {
     
-    public function preaction($action) {
-        if (!isset($_SESSION["player"])) {
-            die("please login.");
+    public function player_action() {
+        $openid = get_request_assert("openid");
+        $nick = get_request_assert("nick");
+        $faceurl = get_request_assert("faceurl");
+        $player = db_players::inst()->get_player_by_openid($openid);
+
+        if (empty($player)) {
+            db_players::inst()->add_by_wechat($openid, $nick, $faceurl);
+            $player = array("id" => db_players::inst()->last_insert_id(), "openid" => $openid, "nick" => $nick, "faceurl" => $faceurl);
         }
+        echo json_encode($player);
     }
 
-    public function index_action() {
+    public function rooms_action() {
         $rooms = room::load_all();
-        $player = get_session_assert("player");
+        $ret = array();
 
-        $tpl = new tpl("client/header", "client/footer");
-        $tpl->set("rooms", $rooms);
-        $tpl->set("player", $player);
-        $tpl->display("client/wuzi/index");
+        foreach ($rooms as $id => $room) {
+            $player1 = $room->player1();
+            $player2 = $room->player2();
+            $p1 = empty($player1) ? array() : array("id" => $player1->id(), "nick" => $player1->nick(), "face" => $player1->faceurl());
+            $p2 = empty($player2) ? array() : array("id" => $player2->id(), "nick" => $player2->nick(), "face" => $player2->faceurl());
+            $ret [] = array("id" => $id, "title" => $room->title(), "chessing" => $room->is_chessing(), "status" => $room->status_text(), "players" => array($p1, $p2), "type" => $room->type_text());
+        }
+        echo json_encode($ret);
     }
 
     public function matchlist_action() {

@@ -18,6 +18,13 @@ class admin_controller {
         }
     }
 
+    public function jscode2session_action() {
+        $code = get_request_assert("code");
+        $url = "https://api.weixin.qq.com/sns/jscode2session?appid=" . WEAPP_APPID . "&secret=" . WEAPP_SECRET . "&js_code=$code&grant_type=authorization_code";
+        $res = read_url($url);
+        echo $res;
+    }
+
     private function checkSignature() {
         if (!isset($_GET["signature"]))
             return false;
