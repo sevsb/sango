@@ -18,6 +18,7 @@ include_once(dirname(__FILE__) . "/libs/WeChat.php");
 include_once(dirname(__FILE__) . "/app/room.class.php");
 include_once(dirname(__FILE__) . "/app/player.class.php");
 include_once(dirname(__FILE__) . "/app/wuzi_match.class.php");
+include_once(dirname(__FILE__) . "/app/match.class.php");
 
 
 // database
