@@ -28,7 +28,7 @@ class client_controller {
         $player = db_players::inst()->get_player_by_id($userid);
         logging::assert(!empty($player), "No such player.");
         $_SESSION["player"] = $player;
-        go("client/wuzi/index");
+        go("client/wuzi/room");
     }
 
 }

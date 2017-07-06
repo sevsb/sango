@@ -38,11 +38,15 @@ client <== ==> server
         "type": "type-text",
         "seats": 2,
     },
-    "players": {
-        "id": 2,
-        "nick": "nick",
-        "face": "URL",
-    },
+    "players": {[
+        {
+            "id": 2,
+            "nick": "nick",
+            "face": "URL"
+        },
+        {
+        }
+    ]},
     "actions": {
         "sit": 1,
         "stand": 0,

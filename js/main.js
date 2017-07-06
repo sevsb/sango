@@ -80,6 +80,48 @@ function __ajax(action, data, success, fail, message_on_success) {
     });
 }
 
+function __request(action, data, success, fail) {
+    $.ajax({
+        url: "index.php?action=" + action,
+        type: 'post',
+        data: data,
+        success: function (data) {
+            console.debug(data);
+            data = eval("(" + data + ")");
+            if (typeof(success) == "string") {
+                document.location.href = success;
+            } else if (typeof(success) == "function") {
+                success(data);
+            } else if (typeof(success) == "boolean") {
+                if (success) {
+                    document.location.reload();
+                }
+            } else {
+                console.debug(typeof(success));
+            }
+        },
+        error: function(object, info) {
+            if (info == "timeout") {
+                alert("服务器连接超时，请稍后再试。");
+            } else if (info == "notmodified") {
+            } else if (info == "error") {
+            } else if (info == "parsererror") {
+            } else {
+            }
+
+            if (typeof(fail) == "string") {
+                document.location.href = fail;
+            } else if (typeof(fail) == "function") {
+                fail(info);
+            } else if (typeof(fail) == "boolean") {
+                if (fail) {
+                    document.location.reload();
+                }
+            } else {
+            }
+        }
+    });
+}
 
 function __ajax_and_reload(action, data, message_on_success) {
     __ajax(action, data, true, false, message_on_success);

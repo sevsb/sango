@@ -22,6 +22,14 @@ class wuzi_controller {
         $tpl->display("client/wuzi/index");
     }
 
+    public function room_action() {
+        $player = get_session_assert("player");
+        $player = new player($player);
+        $tpl = new tpl("client/header", "client/footer");
+        $tpl->set("player", $player);
+        $tpl->display("client/wuzi/room");
+    }
+
     public function matchlist_action() {
         $player = get_session_assert("player");
         $matches = wuzi_match::load_all($player["id"], false);

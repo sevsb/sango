@@ -21,14 +21,12 @@ class wuzi_controller {
 
     public function rooms_action() {
         $rooms = room::load_all();
-        $ret = array();
+        $pss = get_session_assert("player");
+        $player = new player($pss);
 
+        $ret = array();
         foreach ($rooms as $id => $room) {
-            $player1 = $room->player1();
-            $player2 = $room->player2();
-            $p1 = empty($player1) ? array() : array("id" => $player1->id(), "nick" => $player1->nick(), "face" => $player1->faceurl());
-            $p2 = empty($player2) ? array() : array("id" => $player2->id(), "nick" => $player2->nick(), "face" => $player2->faceurl());
-            $ret [] = array("id" => $id, "title" => $room->title(), "chessing" => $room->is_chessing(), "status" => $room->status_text(), "players" => array($p1, $p2), "type" => $room->type_text());
+            $ret []= $room->pack_info($player);
         }
         echo json_encode($ret);
     }

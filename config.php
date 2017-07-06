@@ -39,3 +39,12 @@ defined('TABLE_PLAYERS') or define('TABLE_PLAYERS', MYSQL_PREFIX . "players");
 // mailer
 defined('MAIL_SUBJECT_PREFIX') or define('MAIL_SUBJECT_PREFIX', '');
 
+
+defined('ROOM_SERVER_DOMAIN') or define('ROOM_SERVER_DOMAIN', "www.wuziyi.cc");
+defined('WUZI_SERVER_DOMAIN') or define('WUZI_SERVER_DOMAIN', "www.wuziyi.cc");
+
+defined('ROOM_SERVER_PORT') or define('ROOM_SERVER_PORT', "19503");
+defined('WUZI_SERVER_PORT') or define('WUZI_SERVER_PORT', "19504");
+
+
+

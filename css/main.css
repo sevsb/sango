@@ -112,5 +112,30 @@ img.user-face {
 }
 
 
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
 
+.flex-row {
+  flex-direction:row;
+}
+.flex-col {
+  flex-direction:column;
+}
+
+.flex-wrap {
+  display: flex;
+  display: -webkit-flex;
+}
+
+.flex-item {
+  display: inline-flex;
+  display: -webkit-inline-flex;
+}
 

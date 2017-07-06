@@ -1,0 +1,67 @@
+
+.room {
+  background-color:lightcyan;
+  width: 90%;
+  margin: auto;
+  margin-top: 15px;
+}
+
+.room-header {
+  height: 35px;
+  line-height: 35px;
+}
+
+.room-header button {
+  line-height: 25px;
+  height: 25px;
+  margin-top: 5px;
+}
+
+.room-title {
+  font-weight:bolder;
+  font-size: 30px;
+  line-height: 35rpx;
+}
+
+.tip-node {
+  font-size: 10px;
+  border-radius: 5px;
+  margin-left: 25px;
+  line-height: 17px;
+  height: 17px;
+  width: 75px;
+  text-align: center;
+}
+
+.tip-node.room-status {
+  background-color: #f47920;
+  color:white;
+}
+
+.tip-node.room-type {
+  background-color: #047920;
+  color:white;
+}
+
+.userinfo-avatar {
+  width: 25px;
+  height: 25px;
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.userinfo-nick {
+  height: 17px;
+  margin-top: 7px;
+  line-height: 17px;
+  font-size: 15px;
+}
+
+
+
+
+
+
+
+
+

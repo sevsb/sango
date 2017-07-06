@@ -1,0 +1,25 @@
+<div id="rooms" class="clear" v-if="rooms != null">
+    <div class="room clear" v-for="(room, roomkey) in rooms">
+        <div class="flex-wrap flex-row room-header">
+            <div class="flex-item room-title">{{room.info.title}}</div>
+            <div class="flex-item flex-wrap flex-col">
+                <div class="flex-item tip-node room-type">{{room.info.type}}</div>
+                <div class="flex-item tip-node room-status">{{room.info.status}}</div>
+            </div>
+            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.sit" v-on:click="sit">落座</button>
+            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.stand" v-on:click="stand">起身</button>
+            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.start" v-on:click="start">开始</button>
+            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.watch" v-on:click="watch">观战</button>
+        </div>
+        <div class="flex-wrap flex-col room-body">
+            <div class="flex-item flex-wrap flex-row">
+                <div class="flex-item flex-wrap flex-row" v-for="(player, playerkey) in room.players">
+                    <img class="flex-item userinfo-avatar" v-bind:src="player.face" v-on:click="showNick" v-bind:room="roomkey" v-bind:player="playerkey"></img>
+                    <div class="flex-item userinfo-nick" v-if="player.showNick">{{player.nick}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>var login_token = "{:$player->openid()}";</script>
+

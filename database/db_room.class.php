@@ -46,6 +46,14 @@ class db_room extends database_table {
         return $this->update(array("player2" => $playerid), "id = $roomid");
     }
 
+    public function update_players($roomid, $pids) {
+        $roomid = (int)$roomid;
+        if (is_array($pids)) {
+            $pids = implode(",", $pids);
+        }
+        return $this->update(array("players" => $pids), "id = $roomid");
+    }
+
     public function update_status($roomid, $status) {
         $roomid = (int)$roomid;
         $status = (int)$status;
