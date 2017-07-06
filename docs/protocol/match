@@ -1,0 +1,45 @@
+
+MATCH:
+
+client <== ==> server
+
+==>
+{
+    "op": "join",
+    "token": "xxxxxxx",
+    "roomid": 2
+}
+
+
+<==
+{
+    "op": "tip",
+    "message": "xxxxxxx"
+}
+
+<==
+{
+    "op": "reject",
+    "message": "xxxxxxx"
+}
+
+
+wuzi:
+==>
+{
+    "op": "place",
+    "place": "A13"
+}
+
+<==
+{
+    "op": "refresh",
+    "data": {
+        "place": "A13",
+        "player": "3"
+    }
+}
+
+
+
+

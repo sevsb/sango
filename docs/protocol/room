@@ -1,0 +1,61 @@
+
+ROOM:
+
+client <== ==> server
+
+==>
+{
+    "op": "login",
+    "token": "xxxxxxx"
+}
+
+==>
+{
+    "op": "sit",
+    "roomid": 2
+}
+
+==>
+{
+    "op": "stand",
+    "roomid": 2
+}
+
+==>
+{
+    "op": "start",
+    "roomid": 2
+}
+
+
+<==
+{
+    "op": "refresh",
+    "room": {
+        "id": 1,
+        "title": "room-title",
+        "status": "status-text",
+        "type": "type-text",
+        "seats": 2,
+    },
+    "players": {
+        "id": 2,
+        "nick": "nick",
+        "face": "URL",
+    },
+    "actions": {
+        "sit": 1,
+        "stand": 0,
+        "start": 0,
+        "watch": 0
+    }
+}
+
+<==
+{
+    "op": "tip",
+    "message": "xxxxxxx"
+}
+
+
+
