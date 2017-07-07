@@ -158,6 +158,11 @@ class RoomServer extends Server {
     }
 };
 
+logging::set_file_prefix("roomserver-");
+logging::set_logging_dir(dirname(__FILE__) . "/../logs/");
+
 $s = new RoomServer();
 $s->start(ROOM_SERVER_PORT);
+
+
 
