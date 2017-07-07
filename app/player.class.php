@@ -60,5 +60,13 @@ class player {
         return new player($s);
     }
 
+    public function pack_info() {
+        $parr = array(
+            "id" => $this->id(),
+            "nick" => $this->nick(),
+            "face" => $this->faceurl(),
+        );
+        return $parr;
+    }
 };
 

@@ -252,12 +252,7 @@ class room {
         );
         $data["players"] = array();
         foreach ($this->get_all_players() as $p) {
-            $parr = array(
-                "id" => $p->id(),
-                "nick" => $p->nick(),
-                "face" => $p->faceurl(),
-            );
-            $data["players"] []= $parr;
+            $data["players"] []= $p->pack_info();
         }
 
         $actions  = array("sit" => 0, "stand" => 0, "start" => 0, "watch" => 0);

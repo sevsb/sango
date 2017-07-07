@@ -1,0 +1,36 @@
+
+MatchList:
+
+client <== ==> server
+
+<==
+{
+    "op": "matchlist",
+    "data": {
+        "chessing": [
+            {
+                "info": {
+                    "id": 4,
+                    "type": "wuziqi",
+                    "snapshot": "https://ssssssssssss.png"
+                },
+                "players": {[
+                    {
+                        "id": 2,
+                        "nick": "nick",
+                        "face": "URL"
+                    },
+                    {
+                    }
+                ]},
+
+            },
+        ],
+        "completed": [
+            {
+            },
+        ],
+    }
+}
+
+

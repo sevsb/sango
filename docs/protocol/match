@@ -5,11 +5,9 @@ client <== ==> server
 
 ==>
 {
-    "op": "join",
-    "token": "xxxxxxx",
-    "roomid": 2
+    "op": "login",
+    "token": "xxxxxxx"
 }
-
 
 <==
 {

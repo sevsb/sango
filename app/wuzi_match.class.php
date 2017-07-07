@@ -191,6 +191,14 @@ class wuzi_match {
         }
     }
 
+    public function pack_listinfo() {
+        $info = array("id" => $this->id(), "type" => db_room::TYPE_WUZI, "snapshot" => "");
+        $players = array(
+            $this->player1()->pack_info(),
+            $this->player2()->pack_info(),
+        );
+        return array("info" => $info, "players" => $players);
+    }
 };
 
 

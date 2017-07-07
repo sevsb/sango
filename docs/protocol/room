@@ -32,12 +32,13 @@ client <== ==> server
 {
     "op": "refresh",
     "data": {
-        "room": {
+        "info": {
             "id": 1,
             "title": "room-title",
             "status": "status-text",
             "type": "type-text",
             "seats": 2,
+            "match": 4,
         },
         "players": {[
             {
