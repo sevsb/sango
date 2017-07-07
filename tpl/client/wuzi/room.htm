@@ -1,4 +1,4 @@
-<div id="rooms" class="clear" v-if="rooms != null">
+<div id="rooms" class="clear" v-if="visible">
     <div class="room clear" v-for="(room, roomkey) in rooms">
         <div class="flex-wrap flex-row room-header">
             <div class="flex-item room-title">{{room.info.title}}</div>

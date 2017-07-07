@@ -25,6 +25,7 @@ $(document).ready(function() {
     var rooms = new Vue({
         el: "#rooms",
         data: {
+            visible: true,
             rooms: null
         },
         methods: {
@@ -58,8 +59,8 @@ $(document).ready(function() {
             },
             watch: function(event) {
                 var room = $(event.target).attr("room");
-                var roomid = this.rooms[room].info.id;
-                room_op("watch", roomid);
+                var matchid = this.rooms[room].info.match;
+                document.location.href = "?client/wuzi/match&match=" + matchid;
             }
         }
     });

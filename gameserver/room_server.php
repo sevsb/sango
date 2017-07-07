@@ -104,6 +104,9 @@ class RoomServer extends Server {
     }
 
     protected function onClientClose($fd) {
+        if (!isset($this->clients[$fd])) {
+            return;
+        }
         $player = $this->clients[$fd]->player();
         logging::d("RoomServer", "{$player->nick()} leaves room.");
         unset ($this->clients[$fd]);

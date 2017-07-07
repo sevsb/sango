@@ -207,6 +207,7 @@ class room {
             "status" => $this->status_text(),
             "type" => $this->type_text(),
             "seats" => $this->seats(),
+            "match" => $this->matchid(),
         );
         $data["players"] = array();
         foreach ($this->get_all_players() as $player) {
