@@ -37,7 +37,7 @@ class Server {
         $data["op"] = $op;
         $s = json_encode($data);
         $this->ws->push($fd, $s);
-        logging::d("Server", $s);
+        // logging::d("Server", $s);
         return 0;
     }
 

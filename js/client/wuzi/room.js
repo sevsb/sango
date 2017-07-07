@@ -90,21 +90,13 @@ $(document).ready(function() {
         if (obj.op == "tip") {
             alert(obj.message);
         } else if (obj.op == "refresh") {
-            var rid = obj.info.id;
-            /*
-            var data = rooms.rooms;
-            console.debug(data);
-            console.debug(obj);
-            return;
+            var data = obj.data;
             for (var k in data) {
-                if (data[k].info.id == rid) {
-                    data[k] = obj;
+                for (var pid in data[k].players) {
+                    data[k].players[pid].showNick = false;
                 }
             }
-            console.debug(data);
-            return;
             rooms.rooms = data;
-            */
         }
     };
 

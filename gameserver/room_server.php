@@ -118,8 +118,12 @@ class RoomServer extends Server {
     public function broadcastRoomStatus($room) {
         foreach ($this->clients as $fd => $client) {
             $player = $client->player();
-            $data = $room->pack_info($player);
-            $this->send($fd, "refresh", $data);
+            $ret = array();
+            $ret["data"] = array();
+            foreach ($this->rooms as $mid => $room) {
+                $ret["data"][]= $room->pack_info($player);
+            }
+            $this->send($fd, "refresh", $ret);
         }
     }
 };
