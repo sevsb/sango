@@ -89,7 +89,7 @@ $(document).ready(function() {
         var obj = eval('(' + evt.data + ')');
         console.debug(obj);
         if (obj.op == "tip") {
-            alert(obj.message);
+            alert(obj.data.message);
         } else if (obj.op == "refresh") {
             var data = obj.data;
             for (var k in data) {
@@ -98,6 +98,9 @@ $(document).ready(function() {
                 }
             }
             rooms.rooms = data;
+        } else if (obj.op == "match") {
+            var mid = obj.data.match;
+            document.location.href = "?client/wuzi/match&match=" + mid;
         }
     };
 

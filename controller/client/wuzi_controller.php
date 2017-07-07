@@ -13,6 +13,8 @@ class wuzi_controller {
     }
 
     public function index_action() {
+        go("client/wuzi/room");
+
         $rooms = room::load_all();
         $player = get_session_assert("player");
 

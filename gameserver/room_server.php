@@ -35,11 +35,11 @@ class RoomClient extends Client {
         if ($room == null) {
             return;
         }
-        $ret = $this->server()->player_join($roomid, $this->mPlayer);
+        $ret = $room->player_join($this->mPlayer);
         if (!$ret) {
             return;
         }
-        $this->server()->broadcastRoomStatus($room);
+        $this->server()->update_room($roomid, $room);
     } 
 
     public function onStand($roomid) {
@@ -47,14 +47,46 @@ class RoomClient extends Client {
         if ($room == null) {
             return;
         }
-        $ret = $this->server()->player_leave($roomid, $this->mPlayer);
+        $ret = $room->player_leave($this->mPlayer);
         if (!$ret) {
             return;
         }
-        $this->server()->broadcastRoomStatus($room);
+        $this->server()->update_room($roomid, $room);
     }
 
     public function onStart($roomid) {
+        $room = $this->server()->room($roomid);
+        if (!$room->is_waiting()) {
+            return;
+        }
+        if (!$room->is_full_seats()) {
+            return;
+        }
+        $ret = $room->create_match();
+        if (!$ret) {
+            return;
+        }
+        $this->server()->update_room($roomid, $room);
+
+        $mid = $room->matchid();
+        $this->match($mid);
+    }
+
+    public function tip($msg) {
+        $this->send("tip", array("message" => $msg));
+    }
+
+    public function match($mid) {
+        $this->send("match", array("match" => $mid));
+    }
+
+    public function refresh() {
+        $player = $this->player();
+        $ret = array();
+        foreach ($this->server()->get_all_rooms() as $mid => $room) {
+            $ret []= $room->pack_info($player);
+        }
+        $this->send("refresh", $ret);
     }
 };
 
@@ -85,14 +117,14 @@ class RoomServer extends Server {
         return null;
     }
 
-    public function player_join($id, $player) {
-        return $this->rooms[$id]->player_join($player);
+    public function get_all_rooms() {
+        return $this->rooms;
     }
 
-    public function player_leave($id, $player) {
-        return $this->rooms[$id]->player_leave($player);
+    public function update_room($id, $room) {
+        $this->rooms[$id] = $room;
+        $this->broadcastRoomStatus();
     }
-
 
     private function onLogin($fd, $token) {
         $player = player::create_by_openid($token);
@@ -101,6 +133,7 @@ class RoomServer extends Server {
         }
         $this->clients[$fd] = new RoomClient($this, $fd, $player);
         logging::d("RoomServer", "{$player->nick()} enters room.");
+        $this->clients[$fd]->refresh();
     }
 
     protected function onClientClose($fd) {
@@ -118,15 +151,9 @@ class RoomServer extends Server {
         }
     }
 
-    public function broadcastRoomStatus($room) {
+    public function broadcastRoomStatus() {
         foreach ($this->clients as $fd => $client) {
-            $player = $client->player();
-            $ret = array();
-            $ret["data"] = array();
-            foreach ($this->rooms as $mid => $room) {
-                $ret["data"][]= $room->pack_info($player);
-            }
-            $this->send($fd, "refresh", $ret);
+            $client->refresh();
         }
     }
 };

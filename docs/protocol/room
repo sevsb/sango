@@ -31,35 +31,46 @@ client <== ==> server
 <==
 {
     "op": "refresh",
-    "room": {
-        "id": 1,
-        "title": "room-title",
-        "status": "status-text",
-        "type": "type-text",
-        "seats": 2,
-    },
-    "players": {[
-        {
-            "id": 2,
-            "nick": "nick",
-            "face": "URL"
+    "data": {
+        "room": {
+            "id": 1,
+            "title": "room-title",
+            "status": "status-text",
+            "type": "type-text",
+            "seats": 2,
         },
-        {
+        "players": {[
+            {
+                "id": 2,
+                "nick": "nick",
+                "face": "URL"
+            },
+            {
+            }
+        ]},
+        "actions": {
+            "sit": 1,
+            "stand": 0,
+            "start": 0,
+            "watch": 0
         }
-    ]},
-    "actions": {
-        "sit": 1,
-        "stand": 0,
-        "start": 0,
-        "watch": 0
     }
 }
 
 <==
 {
     "op": "tip",
-    "message": "xxxxxxx"
+    "data": {
+        "message": "xxxxxxx"
+    }
 }
 
+<==
+{
+    "op": "match",
+    "data": {
+        "match": 4
+    }
+}
 
 

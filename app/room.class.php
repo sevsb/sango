@@ -29,11 +29,19 @@ class room {
     }
 
     public function player1() {
-        return isset($this->players[0]) ? $this->players[0] : null;
+        if (count($this->players) > 0) {
+            reset($this->players);
+            return current($this->players);
+        }
+        return null;
     }
 
     public function player2() {
-        return isset($this->players[1]) ? $this->players[1] : null;
+        if (count($this->players) > 1) {
+            reset($this->players);
+            return next($this->players);
+        }
+        return null;
     }
 
     public function get_all_players() {
@@ -95,6 +103,10 @@ class room {
         default:
             return 0;
         }
+    }
+
+    public function is_full_seats() {
+        return count($this->players) == $this->seats();
     }
 
     public function is_chessing() {
@@ -199,6 +211,35 @@ class room {
         return true;
     }
 
+    public function create_match() {
+        db_room::inst()->begin_transaction();
+        $ret = db_room::inst()->update_status($this->id(), db_room::STATUS_CHESSING);
+        if ($ret === false) {
+            db_room::inst()->rollback();
+            return false;
+        }
+
+        if ($this->type() == db_room::TYPE_WUZI) {
+            $ret = db_wuzi_match::inst()->add(db_wuzi_match::TYPE_NORMAL, $this->player1(), $this->player2());
+            if ($ret === false) {
+                db_room::inst()->rollback();
+                return false;
+            }
+            $mid = db_wuzi_match::inst()->last_insert_id();
+            $ret = db_room::inst()->update_match($this->id(), $mid);
+            if ($ret === false) {
+                db_room::inst()->rollback();
+                return false;
+            }
+        } else {
+            logging::fatal("No such game.");
+            return false;
+        }
+        $this->summary["status"] = db_room::STATUS_CHESSING;
+        $this->summary["matchid"] = $mid;
+        return true;
+    }
+
     public function pack_info($player) {
         $data = array();
         $data["info"] = array(
@@ -210,11 +251,11 @@ class room {
             "match" => $this->matchid(),
         );
         $data["players"] = array();
-        foreach ($this->get_all_players() as $player) {
+        foreach ($this->get_all_players() as $p) {
             $parr = array(
-                "id" => $player->id(),
-                "nick" => $player->nick(),
-                "face" => $player->faceurl(),
+                "id" => $p->id(),
+                "nick" => $p->nick(),
+                "face" => $p->faceurl(),
             );
             $data["players"] []= $parr;
         }
@@ -241,7 +282,7 @@ class room {
             if ($this->has_player($player)) {
                 $actions["sit"] = 0;
                 $actions["stand"] = 1;
-                if ($player->equlas($room->first_player())) {
+                if ($player->equals($this->first_player())) {
                     $actions["start"] = 1;
                 }
             } else {

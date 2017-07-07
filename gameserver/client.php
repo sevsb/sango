@@ -1,14 +1,18 @@
 <?php
 class Client {
     private $mServer = null;
-    private $fd = null;
+    private $mFd = null;
     public function Client($server, $fd) {
-        $this->fd = $fd;
+        $this->mFd = $fd;
         $this->mServer = $server;
     }
 
+    public function fd() {
+        return $this->mFd;
+    }
+
     public function send($op, $data) {
-        $this->mServer->send($this->$fd, $op, $data);
+        $this->mServer->send($this->fd(), $op, $data);
     }
 
     public function server() {

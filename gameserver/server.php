@@ -34,8 +34,8 @@ class Server {
 
     public function send($fd, $op, $data) {
         logging::assert(is_array($data), "data must be an array.");
-        $data["op"] = $op;
-        $s = json_encode($data);
+        $temp = array("op" => $op, "data" => $data);
+        $s = json_encode($temp);
         $this->ws->push($fd, $s);
         // logging::d("Server", $s);
         return 0;
