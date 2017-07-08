@@ -37,7 +37,7 @@ class wuzi_controller {
         $matches = wuzi_match::load_all($player["id"], false);
         $tpl = new tpl("client/header", "client/footer");
         $tpl->set("matches", $matches);
-        $tpl->display("client/wuzi/matchlist");
+        $tpl->display("client/wuzi/matchlist2");
     }
 
 

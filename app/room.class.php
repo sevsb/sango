@@ -86,14 +86,18 @@ class room {
         return $this->summary["type"];
     }
 
-    public function type_text() {
-        switch ($this->summary["type"]) {
+    public static function get_type_text($type) {
+        switch ($type) {
         case db_room::TYPE_WUZI:
             return "五子棋";
         default:
             break;
         }
         return "未知";
+    }
+
+    public function type_text() {
+        return self::get_type_text($this->type());
     }
 
     public function seats() {
@@ -220,7 +224,7 @@ class room {
         }
 
         if ($this->type() == db_room::TYPE_WUZI) {
-            $ret = db_wuzi_match::inst()->add(db_wuzi_match::TYPE_NORMAL, $this->player1(), $this->player2());
+            $ret = db_wuzi_match::inst()->add(db_wuzi_match::TYPE_NORMAL, $this->player1()->id(), $this->player2()->id());
             if ($ret === false) {
                 db_room::inst()->rollback();
                 return false;
@@ -232,9 +236,11 @@ class room {
                 return false;
             }
         } else {
+            db_room::inst()->rollback();
             logging::fatal("No such game.");
             return false;
         }
+        db_room::inst()->commit();
         $this->summary["status"] = db_room::STATUS_CHESSING;
         $this->summary["matchid"] = $mid;
         return true;

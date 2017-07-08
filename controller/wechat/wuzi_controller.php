@@ -45,7 +45,7 @@ class wuzi_controller {
                 $data["completed"] []= $match->pack_listinfo();
             }
         }
-        return $data;
+        echo json_encode(array("op" => "matchlist", "data" => $data));
     }
 
 

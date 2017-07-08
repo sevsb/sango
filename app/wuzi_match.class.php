@@ -192,11 +192,14 @@ class wuzi_match {
     }
 
     public function pack_listinfo() {
-        $info = array("id" => $this->id(), "type" => db_room::TYPE_WUZI, "snapshot" => "");
-        $players = array(
-            $this->player1()->pack_info(),
-            $this->player2()->pack_info(),
-        );
+        $info = array("id" => $this->id(), "type" => room::get_type_text(db_room::TYPE_WUZI), "snapshot" => "");
+
+        $p1 = $this->player1()->pack_info();
+        $p2 = $this->player2()->pack_info();
+        $p1["win"] = ($this->player1()->equals($this->winner()) ? 1 : 0);
+        $p2["win"] = ($this->player2()->equals($this->winner()) ? 1 : 0);
+
+        $players = array($p1, $p2);
         return array("info" => $info, "players" => $players);
     }
 };

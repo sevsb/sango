@@ -1,0 +1,28 @@
+<div id="matches" class="clear" v-if="matches != null">
+    <div class="chessing flex-wrap flex-col">
+        <div class="flex-item flex-center title">正在对弈</div>
+        <div class="flex-item flex-wrap flex-row match" v-for="match in matches.chessing">
+            <div class="flex-item flex-center matchid">{{match.info.id}}</div>
+            <div class="flex-item flex-center matchtype">{{match.info.type}}</div>
+            <div class="flex-item flex-space-around players" v-for="player in match.players">
+                <img class="flex-item userinfo-avatar" v-bind:src="player.face"></img>
+                <div class="flex-item userinfo-nick">{{player.nick}}</div>
+            </div>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary weui_btn_mini" v-bind:matchid="match.info.id" v-on:click="join">继续</button>
+        </div>
+    </div>
+    <div class="completed flex-wrap flex-col">
+        <div class="flex-item flex-center title">已完成对局</div>
+        <div class="flex-item flex-wrap flex-row match" v-for="match in matches.completed">
+            <div class="flex-item flex-center matchid">{{match.info.id}}</div>
+            <div class="flex-item flex-center matchtype">{{match.info.type}}</div>
+            <div class="flex-item flex-space-around players" v-for="player in match.players">
+                <img class="flex-item userinfo-avatar" v-bind:src="player.face"></img>
+                <div class="flex-item userinfo-nick">{{player.nick}}</div>
+            </div>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary weui_btn_mini" v-bind:matchid="match.info.id" v-on:click="join">回顾</button>
+        </div>
+    </div>
+</div>
+
+

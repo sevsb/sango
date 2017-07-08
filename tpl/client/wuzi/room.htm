@@ -6,10 +6,10 @@
                 <div class="flex-item tip-node room-type">{{room.info.type}}</div>
                 <div class="flex-item tip-node room-status">{{room.info.status}}</div>
             </div>
-            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.sit" v-on:click="sit">落座</button>
-            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.stand" v-on:click="stand">起身</button>
-            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.start" v-on:click="start">开始</button>
-            <button class="flex-item" v-bind:room="roomkey" v-if="room.actions.watch" v-on:click="watch">观战</button>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary" v-bind:room="roomkey" v-if="room.actions.sit" v-on:click="sit">落座</button>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary" v-bind:room="roomkey" v-if="room.actions.stand" v-on:click="stand">起身</button>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary" v-bind:room="roomkey" v-if="room.actions.start" v-on:click="start">开始</button>
+            <button class="flex-item weui_btn weui_btn_inline weui_btn_primary" v-bind:room="roomkey" v-if="room.actions.watch" v-on:click="watch">观战</button>
         </div>
         <div class="flex-wrap flex-col room-body">
             <div class="flex-item flex-wrap flex-row">
