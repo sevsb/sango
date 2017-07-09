@@ -106,7 +106,7 @@ class RoomServer extends Server {
         return $c->onCommand($op, $data);
     }
 
-    protected function onInit() {
+    public function onInit() {
         logging::d("RoomServer", "reload rooms.");
         $this->rooms = room::load_all();
     }

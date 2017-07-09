@@ -19,10 +19,24 @@ class wuzi_controller {
         echo json_encode($player);
     }
 
+    private function get_player() {
+        $token = get_request("token");
+        if ($token == null) {
+            $pss = get_session_assert("player");
+            $player = new player($pss);
+        } else {
+            $pss = db_players::inst()->get_player_by_openid($token);
+            if (empty($pss)) {
+                die("please login.");
+            }
+            $player = player::create($pss);
+        }
+        return $player;
+    }
+
     public function rooms_action() {
+        $player = $this->get_player();
         $rooms = room::load_all();
-        $pss = get_session_assert("player");
-        $player = new player($pss);
 
         $ret = array();
         foreach ($rooms as $id => $room) {
@@ -32,8 +46,8 @@ class wuzi_controller {
     }
 
     public function matchlist_action() {
-        $player = get_session_assert("player");
-        $matches = wuzi_match::load_all($player["id"], false);
+        $player = $this->get_player();
+        $matches = wuzi_match::load_all($player->id(), false);
 
         $data = array();
         $data["chessing"] = array();

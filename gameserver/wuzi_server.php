@@ -91,7 +91,7 @@ class WuziServer extends Server {
         return $c->onCommand($op, $data);
     }
 
-    protected function onInit() {
+    public function onInit() {
         $this->matches = wuzi_match::load_all();
     }
 
