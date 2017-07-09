@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
 
-    ws = new WebSocket('ws://www.wuziyi.cc:19503');
+    ws = new WebSocket(room_server);
     ws.onopen = function(evt) {
         console.debug(ws);
         login();

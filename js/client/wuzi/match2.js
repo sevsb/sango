@@ -75,7 +75,7 @@ $(document).ready(function() {
         match.board = res.data;
     });
 
-    ws = new WebSocket('ws://www.wuziyi.cc:19504');
+    ws = new WebSocket(wuzi_server);
     ws.onopen = function(evt) {
         console.debug(ws);
         login();
