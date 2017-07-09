@@ -48,6 +48,11 @@ class wuzi_controller {
         echo json_encode(array("op" => "matchlist", "data" => $data));
     }
 
+    public function match_action() {
+        $mid = get_request_assert("match");
+        $match = wuzi_match::create($mid);
+        echo json_encode(array("op" => "board", "data" => $match->pack_info()));
+    }
 
 }
 

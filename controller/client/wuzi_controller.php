@@ -52,7 +52,7 @@ class wuzi_controller {
         $tpl = new tpl("client/header", "client/footer");
         $tpl->set("match", $match);
         $tpl->set("player", $player);
-        $tpl->display("client/wuzi/match");
+        $tpl->display("client/wuzi/match2");
     }
 
     public function join_ajax() {

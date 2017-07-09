@@ -40,6 +40,9 @@ class wuzi_match {
     }
 
     public function next_player() {
+        if (!$this->is_chessing()) {
+            return null;
+        }
         $places = $this->load_places();
         if (empty($places)) {
             return $this->player1();
@@ -69,7 +72,8 @@ class wuzi_match {
 
 
     public function piece_status($place) {
-        foreach ($this->places as $key => $ps) {
+        $places = $this->load_places();
+        foreach ($places as $key => $ps) {
             if ($ps["place"] == $place) {
                 return $ps["player"];
             }
@@ -201,6 +205,50 @@ class wuzi_match {
 
         $players = array($p1, $p2);
         return array("info" => $info, "players" => $players);
+    }
+
+    public function pack_info() {
+        $info = array();
+
+        $p1 = $this->player1()->pack_info();
+        $p2 = $this->player2()->pack_info();
+        $p1["win"] = ($this->player1()->equals($this->winner()) ? 1 : 0);
+        $p2["win"] = ($this->player2()->equals($this->winner()) ? 1 : 0);
+        $p1["turn"] = ($this->player1()->equals($this->next_player()) ? 1 : 0);
+        $p2["turn"] = ($this->player2()->equals($this->next_player()) ? 1 : 0);
+        $players = array("player1" => $p1, "player2" => $p2);
+
+        $board = array();
+        for ($i = 0; $i < 15; $i++) {
+            for ($j = 0; $j < 15; $j++) {
+                $place = chr(ord('A') + $j) . $i;
+                $ps = $this->piece_status($place);
+                $piece = array("piece" => "", "index" => 0, "mark" => 0);
+                if ($ps == 0) {
+                    $piece["piece"] = 0;
+                } else if ($ps == $this->pid1()) {
+                    $piece["piece"] = 1;
+                } else if ($ps == $this->pid2()) {
+                    $piece["piece"] = 2;
+                }
+                $board [$place]= $piece;
+            }
+        }
+        $places = $this->load_places();
+        if (!empty($places)) {
+            $index = 1;
+            $last = null;
+            foreach ($places as $pss) {
+                $ps = $pss["place"];
+                $board[$ps]["index"] = $index;
+                $index++;
+                $last = $ps;
+            }
+            $board[$last]["mark"] = 1;
+        }
+
+        $data = array("info" => $info, "players" => $players, "board" => $board);
+        return $data;
     }
 };
 

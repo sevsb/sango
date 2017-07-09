@@ -31,13 +31,39 @@ wuzi:
 
 <==
 {
-    "op": "refresh",
+    "op": "place",
     "data": {
-        "place": "A13",
-        "player": "3"
+        "A0": 2,
     }
 }
 
-
+<==
+{
+    "op": "board",
+    "data": {
+        "info": {
+        }
+        "board": {
+            "A0": { "piece": "black", "index": 2, "mark": 0 },
+            "A1": { "piece": "", "index": 0, "mark": 0 }
+        },
+        "players": {[
+            "player1": {
+                "id": 1,
+                "face": "xx",
+                "nick": "xx",
+                "turn": 1,
+                "win": 0
+            },
+            "player2": {
+                "id": 1,
+                "face": "xx",
+                "nick": "xx",
+                "turn": 0,
+                "win": 0
+            }
+        ]}
+    }
+}
 
 
