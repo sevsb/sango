@@ -112,7 +112,7 @@ class RoomServer extends Server {
     }
 
     protected function onFirstRef() {
-        swoole_timer_tick(10000, array($this, "onInit"));
+        swoole_timer_tick(60000, array($this, "onInit"));
     }
 
     public function room($id) {
