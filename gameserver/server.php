@@ -2,6 +2,8 @@
 
 class Server {
     private $ws = null;
+    protected $first = true;
+
     public function Start($port) {
         $this->ws = new swoole_websocket_server("0.0.0.0", $port);
         $this->ws->on("open", array($this, "onOpen"));
@@ -12,8 +14,16 @@ class Server {
         $this->ws->start();
     }
 
+    protected function firstRef() {
+        if (!$this->first) {
+            return;
+        }
+        $this->onFirstRef();
+    }
+
     public function onOpen(swoole_websocket_server $server, swoole_http_request $request) {
         logging::d("Server", "webserver open.");
+        $this->firstRef();
     }
 
     public function onMessage(swoole_server $server, swoole_websocket_frame $frame) {
@@ -55,6 +65,8 @@ class Server {
     protected function onClientClose($fd) {
     }
 
+    protected function onFirstRef() {
+    }
 };
 
 

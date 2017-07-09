@@ -6,7 +6,8 @@ client <== ==> server
 ==>
 {
     "op": "login",
-    "token": "xxxxxxx"
+    "token": "xxxxxxx",
+    "match": 4
 }
 
 <==

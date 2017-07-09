@@ -68,7 +68,7 @@ class db_room extends database_table {
 
     public function reset_after_match($matchid) {
         $matchid = (int)$matchid;
-        return $this->update(array("matchid" => 0, "status" => self::STATUS_EMPTY, "player1" => 0, "player2" => 0), "matchid = $matchid");
+        return $this->update(array("matchid" => 0, "status" => self::STATUS_EMPTY, "player1" => 0, "player2" => 0, "players" => ""), "matchid = $matchid");
     }
 };
 

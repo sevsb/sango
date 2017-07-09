@@ -44,11 +44,10 @@ class wuzi_controller {
     public function match_action() {
         $matchid = get_request_assert("match");
         $match = wuzi_match::create($matchid);
-        $match->load_places();
+        // $match->load_places();
 
         $player = get_session_assert("player");
         $player = new player($player);
-
         $tpl = new tpl("client/header", "client/footer");
         $tpl->set("match", $match);
         $tpl->set("player", $player);

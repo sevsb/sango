@@ -107,7 +107,12 @@ class RoomServer extends Server {
     }
 
     protected function onInit() {
+        logging::d("RoomServer", "reload rooms.");
         $this->rooms = room::load_all();
+    }
+
+    protected function onFirstRef() {
+        swoole_timer_tick(10000, array($this, "onInit"));
     }
 
     public function room($id) {

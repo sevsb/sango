@@ -36,7 +36,7 @@
                     }
                     $place = chr($A + $j) . $i;
                 ?>
-                <div place="{=$place}" class="board-node {=$boardclass}" v-bind:style="gridWidth">
+                <div place="{=$place}" class="board-node {=$boardclass}" v-bind:style="gridWidth" v-on:click="place('{=$place}')">
                     <div class="piece"
                         v-bind:style="pieceWidth"
                         v-bind:class="{ 'white-piece': board.board.{=$place}.piece == 2, 'black-piece': board.board.{=$place}.piece == 1 }">
@@ -73,5 +73,13 @@
     </div>
 </div>
 <script>
-var g_matchid = <?php echo $match->id(); ?>;
+var g_matchid = {:$match->id()};
+var login_token = "{:$player->openid()}";
 </script>
+
+
+
+
+
+
+

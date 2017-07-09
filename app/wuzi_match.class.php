@@ -30,12 +30,10 @@ class wuzi_match {
         $pid2 = $summary["player2"];
         $this->players[1] = player::create($pid1);
         $this->players[2] = player::create($pid2);
+        $this->places = db_wuzi_chess::inst()->load_match_places($this->id());
     }
 
     public function load_places() {
-        if (empty($this->places)) {
-            $this->places = db_wuzi_chess::inst()->load_match_places($this->id());
-        }
         return $this->places;
     }
 
@@ -180,19 +178,44 @@ class wuzi_match {
 
     public function place_piece($place) {
         $player = $this->next_player();
-        $ret = db_wuzi_chess::inst()->place_piece($this->id(), $place, $player->id());
-        if ($ret === false) return "fail|数据库操作失败，请稍后重试。";
 
-        $this->places []= array("matchid" => $this->id(), "place" => $place, "player" => $player->id());
+        $pss = $this->piece_status($place);
+        if ($pss != 0) {
+            return false;
+        }
+
+
+        db_wuzi_chess::inst()->begin_transaction();
+
+        $ret = db_wuzi_chess::inst()->place_piece($this->id(), $place, $player->id());
+        if ($ret === false) {
+            db_wuzi_chess::inst()->rollback();
+            return false;
+        }
+        $lastid = db_wuzi_chess::inst()->last_insert_id();
+        $this->places [$lastid]= array("matchid" => $this->id(), "place" => $place, "player" => $player->id());
 
         $winner = $this->check_winner();
+        logging::d("WuziServer", "check winner: {$winner}");
         if ($winner) {
             $ret = db_wuzi_match::inst()->update_winner($this->id(), $player->id());
-            $ret &= db_room::inst()->reset_after_match($this->id());
-            return ($ret !== false) ? "success|{$player->nick()} win." : "fail|{$player->nick()} win.";
-        } else {
-            return "success";
+            if ($ret === false) {
+                db_wuzi_chess::inst()->rollback();
+                unset($this->places[$lastid]);
+                return false;
+            }
+            $ret = db_room::inst()->reset_after_match($this->id());
+            if ($ret === false) {
+                db_wuzi_chess::inst()->rollback();
+                unset($this->places[$lastid]);
+                return false;
+            }
         }
+        if ($winner) {
+            $this->summary["winner"] = $player->id();
+        }
+        db_wuzi_chess::inst()->commit();
+        return true;
     }
 
     public function pack_listinfo() {

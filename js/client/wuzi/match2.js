@@ -1,5 +1,28 @@
 
 $(document).ready(function() {
+    var ws = null;
+    var send = function(obj) {
+        var text = JSON.stringify(obj);
+        console.debug("send: " + text);
+        ws.send(text);
+    };
+
+    var place_piece = function(pls) {
+        var obj = {};
+        obj.op = "place";
+        obj.place = pls;
+        send(obj);
+    };
+
+    var login = function() {
+        var obj = {};
+        obj.op = "login";
+        obj.token = login_token;
+        obj.match = g_matchid;
+        console.debug(obj);
+        send(obj);
+    }
+
     var match = new Vue({
         el: "#match",
         data: {
@@ -17,7 +40,9 @@ $(document).ready(function() {
             showIndex: false,
         },
         methods: {
-            place: {
+            place: function(pls) {
+                // console.debug(pls);
+                place_piece(pls);
             }
         }
     });
@@ -49,6 +74,31 @@ $(document).ready(function() {
         console.debug(res);
         match.board = res.data;
     });
+
+    ws = new WebSocket('ws://www.wuziyi.cc:19504');
+    ws.onopen = function(evt) {
+        console.debug(ws);
+        login();
+    };
+
+    ws.onclose = function(evt) {
+        console.debug(evt);
+    };
+
+    ws.onmessage = function(evt) {
+        var obj = eval('(' + evt.data + ')');
+        console.debug(obj);
+        if (obj.op == "tip") {
+            alert(obj.data.message);
+        } else if (obj.op == "board") {
+            var data = obj.data;
+            match.board = obj.data;
+        }
+    };
+
+    ws.onerror = function(evt, e) {
+        console.error(evt)
+    };
 
 
 });

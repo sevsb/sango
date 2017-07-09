@@ -1,84 +1,167 @@
 <?php
-include_once(dirname(__FILE__) . "../config.php");
-include_once(dirname(__FILE__) . "../database/db_room.class.php");
-include_once(dirname(__FILE__) . "../database/db_wuzi_match.class.php");
-include_once(dirname(__FILE__) . "../database/db_wuzi_chess.class.php");
+include_once(dirname(__FILE__) . "/../config.php");
+include_once(dirname(__FILE__) . "/../database/db_room.class.php");
+include_once(dirname(__FILE__) . "/../database/db_wuzi_match.class.php");
+include_once(dirname(__FILE__) . "/../database/db_wuzi_chess.class.php");
 
+include_once(dirname(__FILE__) . "/server.php");
+include_once(dirname(__FILE__) . "/client.php");
 
-class server {
-    private $ws = null;
-    private $clients = array();
+class WuziClient extends Client {
+    private $mPlayer = null;
+    private $mMatchId = 0;
 
-    public function start() {
-        $this->ws = new swoole_websocket_server("0.0.0.0", 19504);
-        $this->ws->on("open", array($this, "on_open"));
-        $this->ws->on("message", array($this, "on_message"));
-        $this->ws->on("close", array($this, "on_close"));
-        logging::d("Server", "start websocket.");
-        $this->ws->start();
+    public function WuziClient($server, $fd, $player, $matchid) {
+        parent::Client($server, $fd);
+        $this->mPlayer = $player;
+        $this->mMatchId = $matchid;
     }
 
-    public function on_open(swoole_websocket_server $server, swoole_http_request $request) {
-        logging::d("Server", "webserver open.");
-    }   
-
-    public function on_message(swoole_server $server, swoole_websocket_frame $frame) {
-        logging::d("Server", "on_message: " . $frame->data);
-
-        if (!isset($this->clients[$frame->fd])) {
-            $this->clients[$frame->fd] = array("match" => 0, "player" => 0);
+    public function onCommand($op, $data) {
+        switch ($op) {
+        case "place":
+            return $this->onPlace($data["place"]);
         }
-        $jsarr = json_decode($frame->data, true);
-        $op = $jsarr["op"];
-        if ($op == "login") {
-            $player = $jsarr["player"];
-            $this->clients[$frame->fd]["player"] = $player;
-        } else if ($op == "match") {
-            $type = db_room::TYPE_WUZI;
-            $mid = $jsarr["match"];
-            $this->clients[$frame->fd]["match"] = $mid;
-            $this->clients[$frame->fd]["type"] = $type;
-        } else if ($op == "place") {
-            $place = $jsarr["place"];
-            $player = $this->clients[$frame->fd]["player"];
-            $mid = $this->clients[$frame->fd]["match"];
-            $type = $this->clients[$frame->fd]["type"];
+    }
 
-            $match = match::create($type, $mid);
-            if ($match->winner() != null) {
-                $this->ws->push($frame->fd, json_encode(array("op" => "tip", "ret" => "fail", "reason" => "game over. {$match->winner()->nick()} win.")));
-                return;
-            }
-            $lp = $match->next_player();
-            if ($lp->id() != $player) {
-                $this->ws->push($frame->fd, json_encode(array("op" => "tip", "ret" => "fail", "reason" => "Not your turn.")));
-                return;
-            }
-            $ret = $match->place_piece($place);
-            $retarr = explode("|", $ret);
-            if (count($retarr) == 2) {
-                $this->ws->push($frame->fd, json_encode(array("op" => "tip", "ret" => $retarr[0], "reason" => $retarr[1])));
-            } else {
-                $this->ws->push($frame->fd, json_encode(array("op" => "tip", "ret" => $ret)));
-            }
-            foreach ($this->clients as $fd => $client) {
-                if ($client["match"] == $mid) {
-                    $this->ws->push($fd, json_encode(array("op" => "place", "place" => $place, "player" => $player)));
-                }
-            }
+    public function player() {
+        return $this->mPlayer;
+    }
+
+    public function matchid() {
+        return $this->mMatchId;
+    }
+
+    public function onPlace($place) {
+        $match = $this->server()->match($this->matchid());
+        if ($match == null) {
+            logging::e("WuziServer", "no such match: {$this->matchid()}, for player: {$this->player()->nick()}");
+            return;
         }
-    }   
 
-    public function on_handshake(swoole_http_request $request, swoole_http_response $response) {
-        logging::d("Server", "webserver handshake.");
-    }   
+        $winner = $match->winner();
+        if ($winner != null) {
+            $this->tip("{$winner->nick()} win.");
+            return;
+        }
 
-    public function on_close(swoole_server $server, $fd, $reactorId) {
-        logging::d("Server", "webserver close: $fd, " . $this->clients[$fd]["player"]);
-        unset($this->clients[$fd]);
-    }   
+        if (!$this->player()->equals($match->next_player())) {
+            $this->tip("Not your turn");
+            return;
+        }
+
+        $ret = $match->place_piece($place);
+        if (!$ret) {
+            return;
+        }
+        $this->server()->update_match($this->matchid(), $match);
+
+        $winner = $match->winner();
+        if ($winner != null) {
+            $this->server()->broadcastWinner($match);
+        }
+    } 
+
+
+    public function tip($message) {
+        $this->send("tip", array("message" => $message));
+    }
+
+    public function refresh($match) {
+        $info = $match->pack_info();
+        $this->send("board", $info);
+        logging::d("WuziServer", "refresh client: {$this->player()->nick()} for match: {$match->id()}");
+    }
+
 };
 
-$s = new server();
-$s->start();
+class WuziServer extends Server {
+    private $clients = array();
+    private $matches = array();
+
+    protected function onCommand($fd, $op, $data) {
+        logging::d("WuziServer", "onCommand: " . print_r($data, true));
+        if ($op == "login") {
+            return $this->onLogin($fd, $data["token"], $data["match"]);
+        }
+        if (!isset($this->clients[$fd])) {
+            return;
+        }
+        $c = $this->clients[$fd];
+        return $c->onCommand($op, $data);
+    }
+
+    protected function onInit() {
+        $this->matches = wuzi_match::load_all();
+    }
+
+    public function match($mid) {
+        if (isset($this->matches[$mid])) {
+            return $this->matches[$mid];
+        }
+        return null;
+    }
+
+    public function update_match($id, $match) {
+        $this->matches[$id] = $match;
+        $this->broadcastWuziStatus($match);
+    }
+
+    private function onLogin($fd, $token, $mid) {
+        $player = player::create_by_openid($token);
+        if ($player == null) {
+            return;
+        }
+        $this->clients[$fd] = new WuziClient($this, $fd, $player, $mid);
+        $this->onInit();
+        logging::d("WuziServer", "{$player->nick()} joins match.");
+    }
+
+    protected function onClientClose($fd) {
+        if (!isset($this->clients[$fd])) {
+            return;
+        }
+        $player = $this->clients[$fd]->player();
+        logging::d("WuziServer", "{$player->nick()} leaves match.");
+        unset ($this->clients[$fd]);
+    }
+
+    public function broadcast($op, $data) {
+        foreach ($this->clients as $fd => $client) {
+            $this->send($fd, $op, $data);
+        }
+    }
+
+    public function broadcastWuziStatus($match) {
+        $info = $match->pack_info();
+        $data = array("op" => "board", "data" => $info);
+
+        foreach ($this->clients as $fd => $client) {
+            if ($client->matchid() == $match->id()) {
+                $client->refresh($match);
+            }
+        }
+    }
+
+    public function broadcastWinner($match) {
+        $winner = $match->winner();
+        if ($winner == null) {
+            return;
+        }
+        foreach ($this->clients as $fd => $client) {
+            if ($client->matchid() == $match->id()) {
+                $client->tip("{$winner->nick()} win.");
+            }
+        }
+    }
+
+};
+
+logging::set_file_prefix("wuziserver-");
+logging::set_logging_dir(dirname(__FILE__) . "/../logs/");
+
+$s = new WuziServer();
+$s->start(WUZI_SERVER_PORT);
+
+
 
